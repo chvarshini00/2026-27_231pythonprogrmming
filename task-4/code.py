@@ -91,4 +91,4 @@ if len(unallocated) == 0:
 else:
     print("Status: All courses cannot be accommodated.")
 
-print("==================================")
+print("==================================") 
