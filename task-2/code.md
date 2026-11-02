@@ -106,7 +106,8 @@ Event financial planning completed.
 ```
 
 ## 8. Mermaid Flowchart Code
-``` mermaid
+`` mermaid
+
 flowchart TD
     A([Start]) --> B[/Enter expected participants/]
     B --> C[/Input venue, equipment and transport costs/]
@@ -129,7 +130,13 @@ flowchart TD
     Q --> S
     R --> S
     S --> T([Stop])
-````
+mermaid
+
+
+
+``
+
+
 
 
 ## 9. Result
