@@ -132,7 +132,7 @@ Total Cost: Rs.399.00
 ```
 
 ## 7. Mermaid Flowchart Code
-``` mermaid
+```mermaid
     flowchart TD
     A([Start]) --> B[/Enter number of mobile plans/]
     B --> C[Initialize plans list]
