@@ -161,7 +161,7 @@ Total Cost: Rs.399.00
     U --> V[Display most economical plan]
     T --> W([Stop])
     V --> W
-``` 
+````
 
 
 ## 8. Result
