@@ -1,36 +1,26 @@
-venue = float(input("Enter venue cost: "))
-equipment = float(input("Enter equipment cost: "))
-transport = float(input("Enter transport cost: "))
+distance = float(input("Enter travel distance in km: "))
+n = int(input("Enter number of passengers: "))
 
-catering = float(input("Enter catering cost per participant: "))
-certificate = float(input("Enter certificate cost per participant: "))
+rate = 2.0
+total = 0
 
-participants = int(input("Enter expected participants: "))
-sponsorship = float(input("Enter sponsorship amount: "))
+for i in range(n):
+    print("\nPassenger", i + 1)
 
+    name = input("Enter passenger name: ")
+    category = input("Enter category (Normal/Child/Senior): ").lower()
 
-fixed_cost = venue + equipment + transport
-variable_cost = catering + certificate
+    fare = distance * rate
 
-total_cost = fixed_cost + (variable_cost * participants)
+    if category == "child":
+        fare = fare * 0.5
 
+    elif category == "senior":
+        fare = fare * 0.8
 
-contribution = total_cost / participants
+    total += fare
 
+    print("Passenger Name:", name)
+    print("Ticket Fare:", fare)
 
-shortfall = max(0, total_cost - sponsorship)
-
-
-if contribution > variable_cost:
-    minimum = int(fixed_cost / (contribution - variable_cost))
-    if minimum * (contribution - variable_cost) < fixed_cost:
-        minimum += 1
-else:
-    minimum = 0
-
-print("\n--- CAMPUS EVENT FINANCIAL REPORT ---")
-print("Fixed Cost:", fixed_cost)
-print("Total Event Cost:", total_cost)
-print("Participant Contribution:", contribution)
-print("Sponsorship Shortfall:", shortfall)
-print("Minimum Registrations:", minimum)
+print("\nTotal Reservation Cost:", total)
