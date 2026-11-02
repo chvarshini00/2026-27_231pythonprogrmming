@@ -1,118 +1,112 @@
-
-
 from datetime import datetime
+import math
 
 
 rates = {
-    "bike": 10,
+    "two-wheeler": 10,
     "car": 20,
     "bus": 40
 }
 
 
 daily_limits = {
-    "bike": 100,
+    "two-wheeler": 100,
     "car": 200,
     "bus": 400
 }
 
 
-penalty_rate = 50
+overnight_charge = {
+    "two-wheeler": 20,
+    "car": 50,
+    "bus": 100
+}
 
-
-def validate_time(time):
-    try:
-        return datetime.strptime(time, "%H:%M")
-    except ValueError:
-        return None
-
+PENALTY = 100
 
 print("===== SMART PARKING FEE MANAGEMENT =====")
 
-
 vehicle_number = input("Enter vehicle number: ").upper()
 
-vehicle_type = input(
-    "Enter vehicle type (Bike/Car/Bus): "
-).lower()
+print("\nVehicle Categories:")
+print("1. Two-wheeler")
+print("2. Car")
+print("3. Bus")
 
-if vehicle_type not in rates:
+category = input("Enter vehicle category: ").lower()
+
+if category not in rates:
     print("Invalid vehicle category!")
     exit()
 
+time_format = "%Y-%m-%d %H:%M"
 
-while True:
-    entry_time = input("Enter entry time (HH:MM): ")
-    entry = validate_time(entry_time)
-
-    if entry:
-        break
-    else:
-        print("Invalid entry time! Enter again.")
-
-
-while True:
-    exit_time = input("Enter exit time (HH:MM): ")
-    exit = validate_time(exit_time)
-
-    if exit:
-        break
-    else:
-        print("Invalid exit time! Enter again.")
-
-
-entry_minutes = entry.hour * 60 + entry.minute
-exit_minutes = exit.hour * 60 + exit.minute
-
-
-if exit_minutes < entry_minutes:
-    duration = (1440 - entry_minutes) + exit_minutes
-    print("\nOvernight parking detected.")
-else:
-    duration = exit_minutes - entry_minutes
-
-
-total_hours = (duration + 59) // 60
-
-
-hourly_rate = rates[vehicle_type]
-basic_fee = total_hours * hourly_rate
-
-
-daily_limit = daily_limits[vehicle_type]
-
-if total_hours <= 24:
-    parking_fee = min(basic_fee, daily_limit)
-else:
-    full_days = total_hours // 24
-    remaining_hours = total_hours % 24
-
-    parking_fee = (
-        full_days * daily_limit
-        + min(remaining_hours * hourly_rate, daily_limit)
+try:
+    entry = input(
+        "Enter entry date and time (YYYY-MM-DD HH:MM): "
+    )
+    exit_time = input(
+        "Enter exit date and time (YYYY-MM-DD HH:MM): "
     )
 
+    entry_time = datetime.strptime(entry, time_format)
+    exit_time = datetime.strptime(exit_time, time_format)
 
-penalty = 0
+  
+    if exit_time <= entry_time:
+        print("Error: Exit time must be after entry time.")
+        exit()
 
-if total_hours > 24:
-    penalty = penalty_rate
+except ValueError:
+    print("Invalid date or time format!")
+    exit()
 
 
-total_fee = parking_fee + penalty
+duration = (exit_time - entry_time).total_seconds() / 3600
 
+hours = math.ceil(duration)
+
+
+days = math.ceil(duration / 24)
+
+hourly_fee = hours * rates[category]
+
+max_fee = days * daily_limits[category]
+
+parking_fee = min(hourly_fee, max_fee)
+
+overnight = (
+    entry_time.date() != exit_time.date()
+)
+
+if overnight:
+    night_fee = days * overnight_charge[category]
+else:
+    night_fee = 0
+
+violation = input(
+    "Is there any parking violation? (yes/no): "
+).lower()
+
+if violation == "yes":
+    penalty = PENALTY
+else:
+    penalty = 0
+
+total_amount = parking_fee + night_fee + penalty
 
 print("\n========== PARKING BILL ==========")
 print("Vehicle Number :", vehicle_number)
-print("Vehicle Type   :", vehicle_type.capitalize())
+print("Vehicle Category:", category.title())
 print("Entry Time     :", entry_time)
 print("Exit Time      :", exit_time)
-print("Duration       :", duration // 60,
-      "hours", duration % 60, "minutes")
-print("Billable Hours :", total_hours)
-print("Hourly Rate    : Rs.", hourly_rate)
+print("Duration       :", round(duration, 2), "hours")
+print("Billable Hours :", hours)
 print("Parking Fee    : Rs.", parking_fee)
+print("Overnight Fee  : Rs.", night_fee)
 print("Penalty        : Rs.", penalty)
-print("----------------------------------")
-print("Total Fee      : Rs.", total_fee)
-print("==================================")
+print("---------------------------------")
+print("TOTAL AMOUNT   : Rs.", total_amount)
+print("=================================
+
+
