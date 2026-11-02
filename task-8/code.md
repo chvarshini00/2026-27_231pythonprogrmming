@@ -44,6 +44,7 @@ The program must perform the following operations:
 17. Stop the program.
 
 
+
 ## 5. Sample Input
 
 ```
@@ -186,11 +187,10 @@ flowchart TD
 mermaid
 
 
-
 ```
+
 
 
 ## 9. Result
 
 The Python program successfully validates multiple passwords against minimum length, uppercase, lowercase, digit, special character, consecutive repetition, and prohibited-substring rules. It displays whether each password is valid or invalid and explains all the failed conditions.
-
